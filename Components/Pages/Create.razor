@@ -1,0 +1,43 @@
+﻿@inject Film_HF.Data.MySql_DB_Context DB
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+@page "/create"
+
+<PageTitle>Filmek</PageTitle>
+
+<h3>Film hozzáadása</h3>
+<hr />
+
+
+<div class="row">
+    <div class="col-md-4">
+        <EditForm method="post" FormName="create" OnValidSubmit="AddMovie" Model="FilmDB" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" />
+            <div class="mb-3">
+                <label for="title" class="form-label">Cím</label>
+                <InputText id="title" class="form-control" @bind-Value="FilmDB.Title" />
+                <ValidationMessage For="()=>FilmDB.Title" class="text-danger" />
+                <label for="director" class="form-label">Rendező</label>
+                <InputText id="director" class="form-control" @bind-Value="FilmDB.Director" />
+                <ValidationMessage For="()=>FilmDB.Director" class="text-danger" />
+                <label for="imdb" class="form-label">IMDB link</label>
+                <InputText id="imdb" class="form-control" @bind-Value="FilmDB.ImdbLink" />
+                <ValidationMessage For="()=>FilmDB.ImdbLink" class="text-danger" />
+            </div>
+            <button type="submit" class="btn btn-success">Küldés</button>
+            <a href="/" class="btn btn-primary">Vissza a filmekhez</a>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    public Film FilmDB { get; set; } = new();
+    
+    public async Task AddMovie() {
+        DB.Film.Add(FilmDB);
+        await DB.SaveChangesAsync();
+        NavigationManager.NavigateTo("/");
+    }
+}

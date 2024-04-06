@@ -1,0 +1,33 @@
+﻿@using Microsoft.AspNetCore.Components.QuickGrid
+@inject Film_HF.Data.MySql_DB_Context FilmDB
+@page "/"
+
+<PageTitle>Filmek</PageTitle>
+
+<h3>Beadott filmek listája</h3>
+
+<hr/>
+
+<a href="/create" class="btn btn-primary">Film hozzáadása</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Sorszám</th>
+            <th>Cím</th>
+            <th>Rendező</th>
+            <th>IMDB Link</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in FilmDB.Film) {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Title</td>
+                <td>@item.Director</td>
+                <td> <a href="@item.ImdbLink" target="_blank">IMDB</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
